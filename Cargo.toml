@@ -11,7 +11,7 @@ exclude = [
     "main.rs"
 ]
 description = "Flexible parsing and transformation utilities for structured data. Provides helpers like .to_box(), .to_json(), and .from() to simplify data handling and conversion."
-categories = ["parsing", "data-structures", "serialization"]
+categories = ["parsing", "data-structures"]
 keywords = ["parser", "data", "json", "transform", "conversion"]
 authors = ["pas2rust <pas2000@proton.me>"]
 homepage = "https://github.com/pas2rust/shori"
