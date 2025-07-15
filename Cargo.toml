@@ -10,9 +10,25 @@ exclude = [
     "tests",
     "main.rs"
 ]
-categories = ["cryptography", "security"]
-description = "Cryptography utilities and implementations including Argon2, bcrypt, post-quantum algorithms and JWT support"
-keywords = ["cryptography", "argon2", "bcrypt", "post-quantum", "jwt"]
+description = "Flexible parsing and transformation utilities for structured data. Provides helpers like .to_box(), .to_json(), and from::<T>() to simplify data handling and conversion."
+categories = ["parsing", "data-structures", "serialization"]
+keywords = ["parser", "data", "json", "transform", "conversion"]
 authors = ["pas2rust <pas2000@proton.me>"]
 homepage = "https://github.com/pas2rust/shori"
 documentation = "https://docs.rs/shori"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+bincode = "2.0.1"
+hex = "0.4.3"
+kenzu = "0.0.2"
+mokuya = "0.0.3"
+proc-macro2 = "1.0.95"
+quote = "1.0.40"
+regex = "1.11.1"
+serde = { version="1", features = ["derive"]}
+serde_json = "1.0.140"
+syn = "2.0.104"
+tokio = {version ="1.46.1", features = ["full"]}
