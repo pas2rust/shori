@@ -8,6 +8,6 @@ pub use super::parse_mutex::generate_parse_mutex;
 pub use super::parse_once_cell::generate_parse_once_cell;
 pub use super::parse_ref_cell::generate_parse_ref_cell;
 pub use super::parse_tokio_mutex::generate_parse_tokio_mutex;
+pub use super::parse_toml::generate_parse_toml;
 pub use super::parse_unsafe_cell::generate_parse_unsafe_cell;
 pub use super::parse_vec::generate_parse_vec;
-pub use super::parse_toml::generate_parse_toml;

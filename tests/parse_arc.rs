@@ -12,7 +12,7 @@ use shori::Parser;
     Serialize,
     Deserialize,
     bincode::Encode,
-    bincode::Decode,  
+    bincode::Decode,
 )]
 pub struct User {
     pub id: String,

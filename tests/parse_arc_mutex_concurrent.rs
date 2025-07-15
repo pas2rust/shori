@@ -12,7 +12,7 @@ use shori::Parser;
     Serialize,
     Deserialize,
     bincode::Encode,
-    bincode::Decode, 
+    bincode::Decode,
 )]
 pub struct User {
     pub id: String,
@@ -29,7 +29,6 @@ pub struct User {
     pub age: u8,
     pub gender: String,
 }
-
 
 #[test]
 fn parse_arc_mutex_concurrent() {

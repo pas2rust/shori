@@ -83,7 +83,7 @@ pub fn generate_parse(input: &DeriveInput) -> TokenStream {
                 cell.set(self.0).ok();
                 ParseOnceCell(cell)
             }
-            
+
             pub fn tuple(&self) -> (#(&#field_types),*) {
                 (#(#field_names),*)
             }

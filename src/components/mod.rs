@@ -8,7 +8,7 @@ pub mod parse_mutex;
 pub mod parse_once_cell;
 pub mod parse_ref_cell;
 pub mod parse_tokio_mutex;
+pub mod parse_toml;
 pub mod parse_unsafe_cell;
 pub mod parse_vec;
 pub mod prelude;
-pub mod parse_toml;
