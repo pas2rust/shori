@@ -26,6 +26,8 @@ hex = "0.4.3"
 kenzu = "0.0.2"
 mokuya = "0.0.3"
 proc-macro2 = "1.0.95"
+toml = { version = "0.9", features = ["serde"] }
+#rkyv = { version = "0.8", features = ["std", "alloc"] }
 quote = "1.0.40"
 regex = "1.11.1"
 serde = { version="1", features = ["derive"]}

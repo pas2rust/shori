@@ -59,6 +59,12 @@ pub fn generate_parse(input: &DeriveInput) -> TokenStream {
                 Ok(ParseBin(serialized))
             }
 
+            pub fn toml(self) -> Result<ParseToml, Box<dyn std::error::Error>> {
+                let toml_string = toml::to_string(&self.0)?;
+                let value = toml::from_str::<toml::Value>(&toml_string)?;
+                Ok(ParseToml(value))
+            }
+
             pub fn json(self) -> Result<ParseJson, Box<dyn Error>> {
                 let json = serde_json::to_value(self.0)?;
                 Ok(ParseJson(json))
@@ -77,8 +83,7 @@ pub fn generate_parse(input: &DeriveInput) -> TokenStream {
                 cell.set(self.0).ok();
                 ParseOnceCell(cell)
             }
-
-
+            
             pub fn tuple(&self) -> (#(&#field_types),*) {
                 (#(#field_names),*)
             }

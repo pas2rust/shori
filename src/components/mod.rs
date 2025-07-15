@@ -11,3 +11,4 @@ pub mod parse_tokio_mutex;
 pub mod parse_unsafe_cell;
 pub mod parse_vec;
 pub mod prelude;
+pub mod parse_toml;
