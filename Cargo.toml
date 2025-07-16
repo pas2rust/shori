@@ -24,6 +24,7 @@ proc-macro = true
 bincode = "2.0.1"
 hex = "0.4.3"
 kenzu = "0.0.2"
+zipher = { version = "0.0", features = ["aes"]}
 mokuya = "0.0.3"
 proc-macro2 = "1.0.95"
 toml = { version = "0.9", features = ["serde"] }

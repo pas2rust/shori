@@ -87,6 +87,15 @@ pub fn generate_parse(input: &DeriveInput) -> TokenStream {
             pub fn tuple(&self) -> (#(&#field_types),*) {
                 (#(#field_names),*)
             }
+
+            pub fn aes_gcm_siv(self) -> Result<ParseAesGcmSiv, zipher::components::aes_gcm_siv::AesErr> {
+                use zipher::components::aes_gcm_siv::*;
+                let mut aes = Aes::new();
+                let encrypt = aes
+                    .target(self.bin()?.get())
+                    .encrypt()?;
+                ParseAesGcmSiv(encrypt)
+            }
         }
 
         //#[cfg_attr(feature = "tracing", mdd::debugger_impl)]
