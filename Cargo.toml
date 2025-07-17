@@ -1,6 +1,6 @@
 [package]
 name = "shori"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2024"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/pas2rust/shori"
@@ -10,7 +10,7 @@ exclude = [
     "tests",
     "main.rs"
 ]
-description = "Flexible parsing and transformation utilities for structured data. Provides helpers like .to_box(), .to_json(), and .from() to simplify data handling and conversion."
+description = "Flexible parsing and transformation utilities for structured data. #[derive(Parser)] adds methods like .parse().json(), .toml(), .bin(), .map(), and .from() to simplify conversions using common wrappers like Arc, Mutex, Box, OnceCell, etc."
 categories = ["parsing", "data-structures"]
 keywords = ["parser", "data", "json", "transform", "conversion"]
 authors = ["pas2rust <pas2000@proton.me>"]
@@ -24,7 +24,7 @@ proc-macro = true
 bincode = "2.0.1"
 hex = "0.4.3"
 kenzu = "0.0.2"
-zipher = { version = "0.0", features = ["aes"]}
+zipher = { version = "0.0.5", features = ["aes"]}
 mokuya = "0.0.3"
 proc-macro2 = "1.0.95"
 toml = { version = "0.9", features = ["serde"] }

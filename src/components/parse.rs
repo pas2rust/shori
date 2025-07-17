@@ -18,18 +18,28 @@ pub fn generate_parse(input: &DeriveInput) -> TokenStream {
     let field_idents: Vec<_> = fields.iter().map(|field| &field.ident).collect();
 
     quote! {
+        /// Wrapper type that provides parsing and transformation utilities
+        /// for the underlying struct.
         pub struct Parse(#struct_name);
 
-        //#[cfg_attr(feature = "tracing", mdd::debugger_impl)]
         impl Parse {
+            /// Converts the inner struct into an `Arc`, wrapped in `ParseArc`.
+            ///
+            /// Useful for thread-safe shared ownership.
             pub fn arc(self) -> ParseArc {
                 ParseArc(std::sync::Arc::new(self.0))
             }
 
+            /// Converts into a `tokio::sync::Mutex`, wrapped in `ParseTokioMutex`.
+            ///
+            /// Useful for safe mutation across async tasks.
             pub fn tokio_mutex(self) -> ParseTokioMutex {
                 ParseTokioMutex(tokio::sync::Mutex::new(self.0))
             }
 
+            /// Converts the struct fields into a `HashMap<String, Box<dyn Any + Send + Sync>>`.
+            ///
+            /// This enables dynamic access to fields by their name.
             pub fn hashmap(self) -> ParseHashMap {
                 let mut map = std::collections::HashMap::new();
                 #(
@@ -41,65 +51,87 @@ pub fn generate_parse(input: &DeriveInput) -> TokenStream {
                 ParseHashMap(map)
             }
 
+            /// Converts into a `std::sync::Mutex` wrapped in `ParseMutex`.
+            ///
+            /// Use this for interior mutability in synchronous code.
             pub fn mutex(self) -> ParseMutex {
                 ParseMutex(std::sync::Mutex::new(self.0))
             }
 
+            /// Boxes the inner struct into `Box<T>`, wrapped in `ParseBox`.
             pub fn boxed(self) -> ParseBox {
                 ParseBox(Box::new(self.0))
             }
 
+            /// Wraps the struct in a `RefCell`, allowing interior mutability in single-threaded contexts.
             pub fn ref_cell(self) -> ParseRefCell {
                 ParseRefCell(std::cell::RefCell::new(self.0))
             }
 
-            pub fn bin(self) -> Result<ParseBin, Box<dyn Error>> {
+            /// Serializes the struct into binary using `bincode`, wrapped in `ParseBin`.
+            ///
+            /// # Errors
+            /// Returns an error if serialization fails.
+            pub fn bin(self) -> Result<ParseBin, Box<dyn std::error::Error>> {
                 let config = bincode::config::standard();
                 let serialized = bincode::encode_to_vec(&self.0, config)?;
                 Ok(ParseBin(serialized))
             }
 
+            /// Serializes the struct into a `toml::Value`, wrapped in `ParseToml`.
+            ///
+            /// # Errors
+            /// Returns an error if TOML serialization or parsing fails.
             pub fn toml(self) -> Result<ParseToml, Box<dyn std::error::Error>> {
                 let toml_string = toml::to_string(&self.0)?;
                 let value = toml::from_str::<toml::Value>(&toml_string)?;
                 Ok(ParseToml(value))
             }
 
-            pub fn json(self) -> Result<ParseJson, Box<dyn Error>> {
+            /// Serializes the struct into a `serde_json::Value`, wrapped in `ParseJson`.
+            ///
+            /// # Errors
+            /// Returns an error if JSON serialization fails.
+            pub fn json(self) -> Result<ParseJson, Box<dyn std::error::Error>> {
                 let json = serde_json::to_value(self.0)?;
                 Ok(ParseJson(json))
             }
 
+            /// Wraps the struct into a `Vec<T>`, containing a single element.
+            ///
+            /// Useful for APIs that expect list input.
             pub fn vec(self) -> ParseVec {
                 ParseVec(vec![self.0])
             }
 
+            /// Wraps the struct in an `UnsafeCell`.
+            ///
+            /// Allows unchecked interior mutability.
             pub fn unsafe_cell(self) -> ParseUnsafeCell {
                 ParseUnsafeCell(std::cell::UnsafeCell::new(self.0))
             }
 
+            /// Initializes a `OnceCell` with the struct.
+            ///
+            /// The value is set once and subsequent attempts are ignored.
             pub fn once_cell(self) -> ParseOnceCell {
                 let cell = std::cell::OnceCell::new();
-                cell.set(self.0).ok();
+                let _ = cell.set(self.0);
                 ParseOnceCell(cell)
             }
 
+            /// Returns a tuple of references to all the struct's fields.
+            ///
+            /// Useful for destructuring or pattern matching.
             pub fn tuple(&self) -> (#(&#field_types),*) {
                 (#(#field_names),*)
             }
-
-            pub fn aes_gcm_siv(self) -> Result<ParseAesGcmSiv, zipher::components::aes_gcm_siv::AesErr> {
-                use zipher::components::aes_gcm_siv::*;
-                let mut aes = Aes::new();
-                let encrypt = aes
-                    .target(self.bin()?.get())
-                    .encrypt()?;
-                ParseAesGcmSiv(encrypt)
-            }
         }
 
-        //#[cfg_attr(feature = "tracing", mdd::debugger_impl)]
         impl #impl_block {
+            /// Converts the original struct into a [`Parse`] wrapper.
+            ///
+            /// Enables access to parsing utilities and conversions.
             pub fn parse(self) -> Parse {
                 Parse(self)
             }

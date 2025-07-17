@@ -683,7 +683,7 @@ checksum = "0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64"
 
 [[package]]
 name = "shori"
-version = "0.0.1"
+version = "0.0.2"
 dependencies = [
  "bincode",
  "hex",
@@ -1115,9 +1115,9 @@ checksum = "ced3678a2879b30306d323f4542626697a464a97c0a07c9aebf7ebca65cd4dde"
 
 [[package]]
 name = "zipher"
-version = "0.0.4"
+version = "0.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6e701003bb26d6b8cc561a4e885676dc479aad23822e31b31dffb383c210907e"
+checksum = "c39e51d782524186f5eb865d86f5ed91b037e68d1971679151d41368e83dbd0c"
 dependencies = [
  "aes-gcm-siv",
  "hex",

@@ -30,7 +30,6 @@ pub fn parser(input: TokenStream) -> TokenStream {
             generate_parse_json(&input),
             generate_parse_bin(&input),
             generate_parse_toml(&input),
-            generate_parse_aes_gcm_siv(&input)
         ],
     );
     expanded.into()
