@@ -1,28 +1,24 @@
 use kenzu::Builder;
 use serde::{Deserialize, Serialize};
-use shori::Parser;
+use shori::macros::Parser;
 
 #[derive(
     Builder,
-    PartialEq,
     Default,
-    Parser,
     Debug,
     Clone,
+    PartialEq,
     Serialize,
     Deserialize,
     bincode::Encode,
     bincode::Decode,
+    Parser,
 )]
 pub struct User {
     pub id: String,
     #[set(value = "name")]
     pub name: String,
     pub password: String,
-    #[build(
-        pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
-        err = "err"
-    )]
     #[set(value = "email@example.com")]
     pub email: String,
     #[set(value = 18)]
@@ -31,8 +27,32 @@ pub struct User {
 }
 
 #[test]
-fn parse_vec() {
-    let users = User::new()
+fn parse_toml() {
+    let user_parse = User::new()
+        .id("123e4567-e89b-12d3-a456-426614174000")
+        .name("John Doe")
+        .password("123")
+        .email("john@example.com")
+        .age(25)
+        .gender("M")
+        .build()
+        .unwrap()
+        .parse()
+        .toml()
+        .unwrap();
+
+    let toml_val = user_parse.get();
+    let recovered = user_parse.from_value(&toml_val).unwrap();
+
+    assert_eq!(recovered.name, "John Doe");
+
+    let from = user_parse.from().unwrap();
+    assert_eq!(from.email, "john@example.com");
+}
+
+#[test]
+fn parse_box() {
+    let user = User::new()
         .id("123e4567-e89b-12d3-a456-426614174000")
         .name("John Doe")
         .password("password123")
@@ -42,17 +62,8 @@ fn parse_vec() {
         .build()
         .unwrap()
         .parse()
-        .vec()
+        .boxed()
         .get();
 
-    assert_eq!(users.len(), 1);
-
-    let user = &users[0];
-
-    assert_eq!(user.id, "123e4567-e89b-12d3-a456-426614174000");
     assert_eq!(user.name, "John Doe");
-    assert_eq!(user.password, "password123");
-    assert_eq!(user.email, "johndoe@example.com");
-    assert_eq!(user.age, 25);
-    assert_eq!(user.gender, "F");
 }

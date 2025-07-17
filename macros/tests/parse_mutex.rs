@@ -1,6 +1,6 @@
 use kenzu::Builder;
 use serde::{Deserialize, Serialize};
-use shori::Parser;
+use macros::Parser;
 
 #[derive(
     Builder,
@@ -31,7 +31,7 @@ pub struct User {
 }
 
 #[test]
-fn parse_arc() {
+fn parse_mutex() {
     let user = User::new()
         .id("123e4567-e89b-12d3-a456-426614174000")
         .name("John Doe")
@@ -42,8 +42,10 @@ fn parse_arc() {
         .build()
         .unwrap()
         .parse()
-        .arc()
+        .mutex()
         .get();
+
+    let user = user.lock().unwrap();
 
     assert_eq!(user.id, "123e4567-e89b-12d3-a456-426614174000");
     assert_eq!(user.name, "John Doe");
