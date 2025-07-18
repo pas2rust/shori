@@ -1,6 +1,6 @@
 use kenzu::Builder;
 use serde::{Deserialize, Serialize};
-use macros::Parser;
+use shori::Parser;
 
 #[derive(
     Builder,
@@ -31,8 +31,8 @@ pub struct User {
 }
 
 #[test]
-fn parse_json() {
-    let user_parse_json = User::new()
+fn parse_box() {
+    let user = User::new()
         .id("123e4567-e89b-12d3-a456-426614174000")
         .name("John Doe")
         .password("password123")
@@ -42,27 +42,8 @@ fn parse_json() {
         .build()
         .unwrap()
         .parse()
-        .json()
-        .unwrap();
+        .boxed()
+        .get();
 
-    let user_json = user_parse_json.get();
-    let from_value_user = user_parse_json.from_value(&user_json);
-    assert!(from_value_user.is_ok());
-
-    let user = from_value_user.unwrap();
-    assert_eq!(user.id, "123e4567-e89b-12d3-a456-426614174000");
     assert_eq!(user.name, "John Doe");
-    assert_eq!(user.email, "johndoe@example.com");
-    assert_eq!(user.age, 25);
-    assert_eq!(user.gender, "F");
-
-    let user_from = user_parse_json.from();
-    assert!(user_from.is_ok());
-
-    let user = user_from.unwrap();
-    assert_eq!(user.id, "123e4567-e89b-12d3-a456-426614174000");
-    assert_eq!(user.name, "John Doe");
-    assert_eq!(user.email, "johndoe@example.com");
-    assert_eq!(user.age, 25);
-    assert_eq!(user.gender, "F");
 }

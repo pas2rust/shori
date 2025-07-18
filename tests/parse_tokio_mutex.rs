@@ -1,6 +1,6 @@
 use kenzu::Builder;
 use serde::{Deserialize, Serialize};
-use macros::Parser;
+use shori::Parser;
 
 #[derive(
     Builder,
@@ -30,8 +30,8 @@ pub struct User {
     pub gender: String,
 }
 
-#[test]
-fn parse_box() {
+#[tokio::test]
+async fn parse_tokio_mutex() {
     let user = User::new()
         .id("123e4567-e89b-12d3-a456-426614174000")
         .name("John Doe")
@@ -42,8 +42,15 @@ fn parse_box() {
         .build()
         .unwrap()
         .parse()
-        .boxed()
+        .tokio_mutex()
         .get();
 
+    let user = user.lock().await;
+
+    assert_eq!(user.id, "123e4567-e89b-12d3-a456-426614174000");
     assert_eq!(user.name, "John Doe");
+    assert_eq!(user.password, "password123");
+    assert_eq!(user.email, "johndoe@example.com");
+    assert_eq!(user.age, 25);
+    assert_eq!(user.gender, "F");
 }

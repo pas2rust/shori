@@ -1,6 +1,6 @@
 use kenzu::Builder;
 use serde::{Deserialize, Serialize};
-use macros::Parser;
+use shori::Parser;
 
 #[derive(
     Builder,
@@ -31,7 +31,7 @@ pub struct User {
 }
 
 #[test]
-fn parse_once_cell() {
+fn parse_tuple() {
     let user = User::new()
         .id("123e4567-e89b-12d3-a456-426614174000")
         .name("John Doe")
@@ -41,8 +41,14 @@ fn parse_once_cell() {
         .gender("F")
         .build()
         .unwrap()
-        .parse()
-        .once_cell();
+        .parse();
 
-    assert_eq!(user.get().unwrap().name, "John Doe");
+    let (id, name, password, email, age, gender) = user.tuple();
+
+    assert_eq!(id, "123e4567-e89b-12d3-a456-426614174000");
+    assert_eq!(name, "John Doe");
+    assert_eq!(password, "password123");
+    assert_eq!(email, "johndoe@example.com");
+    assert_eq!(age, &25);
+    assert_eq!(gender, "F");
 }

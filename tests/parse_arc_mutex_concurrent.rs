@@ -1,6 +1,6 @@
 use kenzu::Builder;
 use serde::{Deserialize, Serialize};
-use macros::Parser;
+use shori::Parser;
 
 #[derive(
     Builder,
@@ -31,7 +31,10 @@ pub struct User {
 }
 
 #[test]
-fn parse_arc() {
+fn parse_arc_mutex_concurrent() {
+    use std::sync::Arc;
+    use std::thread;
+
     let user = User::new()
         .id("123e4567-e89b-12d3-a456-426614174000")
         .name("John Doe")
@@ -42,13 +45,16 @@ fn parse_arc() {
         .build()
         .unwrap()
         .parse()
-        .arc()
-        .get();
+        .mutex()
+        .arc();
 
-    assert_eq!(user.id, "123e4567-e89b-12d3-a456-426614174000");
-    assert_eq!(user.name, "John Doe");
-    assert_eq!(user.password, "password123");
-    assert_eq!(user.email, "johndoe@example.com");
-    assert_eq!(user.age, 25);
-    assert_eq!(user.gender, "F");
+    let user_clone = Arc::clone(&user);
+    let handle = thread::spawn(move || {
+        let mut locked_user = user_clone.lock().unwrap();
+        locked_user.name = "Jane Doe".into();
+    });
+
+    handle.join().unwrap();
+
+    assert_eq!(user.lock().unwrap().name, "Jane Doe");
 }

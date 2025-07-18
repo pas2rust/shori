@@ -1,6 +1,6 @@
 use kenzu::Builder;
 use serde::{Deserialize, Serialize};
-use macros::Parser;
+use shori::Parser;
 
 #[derive(
     Builder,
@@ -31,8 +31,8 @@ pub struct User {
 }
 
 #[test]
-fn parse_vec() {
-    let users = User::new()
+fn parse_arc_mutex() {
+    let user = User::new()
         .id("123e4567-e89b-12d3-a456-426614174000")
         .name("John Doe")
         .password("password123")
@@ -42,17 +42,15 @@ fn parse_vec() {
         .build()
         .unwrap()
         .parse()
-        .vec()
-        .get();
+        .mutex()
+        .arc();
 
-    assert_eq!(users.len(), 1);
+    let locked_user = user.lock().unwrap();
 
-    let user = &users[0];
-
-    assert_eq!(user.id, "123e4567-e89b-12d3-a456-426614174000");
-    assert_eq!(user.name, "John Doe");
-    assert_eq!(user.password, "password123");
-    assert_eq!(user.email, "johndoe@example.com");
-    assert_eq!(user.age, 25);
-    assert_eq!(user.gender, "F");
+    assert_eq!(locked_user.id, "123e4567-e89b-12d3-a456-426614174000");
+    assert_eq!(locked_user.name, "John Doe");
+    assert_eq!(locked_user.password, "password123");
+    assert_eq!(locked_user.email, "johndoe@example.com");
+    assert_eq!(locked_user.age, 25);
+    assert_eq!(locked_user.gender, "F");
 }

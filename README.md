@@ -39,7 +39,7 @@ Basic Example
 ```rust
 use kenzu::Builder;
 use serde::{Deserialize, Serialize};
-use shori::macros::Parser;
+use shori::Parser;
 
 #[derive(
     Builder,

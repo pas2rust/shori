@@ -232,7 +232,7 @@ version = "0.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "81684634212d0a6fd9504d4e5a4b432aff66cea916710f6f1fc5b6db7b5589b2"
 dependencies = [
- "mokuya",
+ "mokuya 0.0.2",
  "proc-macro2",
  "quote",
  "regex",
@@ -260,24 +260,6 @@ name = "log"
 version = "0.4.27"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "13dc2df351e3202783a1fe0d44375f7295ffb4049267b0f3018346dc122a1d94"
-
-[[package]]
-name = "macros"
-version = "0.0.2"
-dependencies = [
- "bincode",
- "hex",
- "kenzu",
- "mokuya",
- "proc-macro2",
- "quote",
- "regex",
- "serde",
- "serde_json",
- "syn",
- "tokio",
- "toml",
-]
 
 [[package]]
 name = "memchr"
@@ -310,6 +292,19 @@ name = "mokuya"
 version = "0.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3e5b13161297e5baa3349f1c706d0053af9160ed94543d1314db6f64d256c292"
+dependencies = [
+ "chrono",
+ "colorful",
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "mokuya"
+version = "0.0.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e77cfd296b26debcbcde098ef241f7207b677983f4e9b3966ce0b307d0066a67"
 dependencies = [
  "chrono",
  "colorful",
@@ -505,10 +500,13 @@ dependencies = [
  "bincode",
  "hex",
  "kenzu",
- "macros",
+ "mokuya 0.0.3",
+ "proc-macro2",
+ "quote",
  "regex",
  "serde",
  "serde_json",
+ "syn",
  "tokio",
  "toml",
 ]
