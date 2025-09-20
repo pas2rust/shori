@@ -3,6 +3,11 @@
 [![Crates.io](https://img.shields.io/crates/v/shori.svg)](https://crates.io/crates/shori)
 [![Docs.rs](https://docs.rs/shori/badge.svg)](https://docs.rs/shori)
 [![License](https://img.shields.io/crates/l/shori.svg)](https://github.com/pas2rust/shori/blob/main/LICENSE)
+![GitHub top language](https://img.shields.io/github/languages/top/pas2rust/shori?color=orange&logo=rust&style=flat&logoColor=white)
+![GitHub stars](https://img.shields.io/github/stars/pas2rust/shori?color=success&style=flat&logo=github)
+![GitHub forks](https://img.shields.io/github/forks/pas2rust/shori?color=orange&logo=Furry%20Network&style=flat&logoColor=white)
+![GitHub last commit](https://img.shields.io/github/last-commit/pas2rust/shori?color=ff69b4&label=update&logo=git&style=flat&logoColor=white)
+
 
 **`shori`** is a flexible data transformation and parsing toolkit for Rust.  
 It provides the `#[derive(Parser)]` macro, which automatically implements conversions for your structs—supporting formats like JSON, TOML, bincode, and common smart pointers and containers like `Arc`, `Mutex`, and `Box`.
