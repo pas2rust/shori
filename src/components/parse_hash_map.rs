@@ -24,26 +24,31 @@ pub fn generate_parse_hash_map() -> TokenStream {
                     .and_then(|value| value.downcast_ref::<T>())
             }
 
+            #[cfg(feature="arc")]
             /// Converts the internal HashMap into an Arc for shared ownership.
             pub fn arc(self) -> Arc<HashMapResp> {
                 Arc::new(self.0)
             }
 
+            #[cfg(feature="box")]
             /// Boxes the internal HashMap.
             pub fn boxed(self) -> Box<HashMapResp> {
                 Box::new(self.0)
             }
 
+            #[cfg(feature="refcell")]
             /// Wraps the internal HashMap in a RefCell for interior mutability.
             pub fn ref_cell(self) -> RefCell<HashMapResp> {
                 RefCell::new(self.0)
             }
 
+            #[cfg(feature="unsafecell")]
             /// Wraps the internal HashMap in an UnsafeCell.
             pub fn unsafe_cell(self) -> UnsafeCell<HashMapResp> {
                 UnsafeCell::new(self.0)
             }
 
+            #[cfg(feature="oncecell")]
             /// Wraps the internal HashMap in a OnceCell for one-time initialization.
             pub fn once_cell(self) -> OnceCell<HashMapResp> {
                 let cell = OnceCell::new();

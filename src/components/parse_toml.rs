@@ -17,6 +17,7 @@ pub fn generate_parse_toml(input: &DeriveInput) -> TokenStream {
                 &self.0
             }
 
+            #[cfg(feature="arc")]
             /// Consumes `ParseToml` and wraps it in `Arc<toml::Value>`.
             ///
             /// Enables shared ownership across threads.
@@ -24,6 +25,7 @@ pub fn generate_parse_toml(input: &DeriveInput) -> TokenStream {
                 std::sync::Arc::new(self.0)
             }
 
+            #[cfg(feature = "tokio")]
             /// Consumes `ParseToml` and wraps it in `tokio::sync::Mutex`.
             ///
             /// Useful in async environments for interior mutability.
@@ -31,6 +33,7 @@ pub fn generate_parse_toml(input: &DeriveInput) -> TokenStream {
                 tokio::sync::Mutex::new(self.0)
             }
 
+            #[cfg(feature="mutex")]
             /// Consumes `ParseToml` and wraps it in `std::sync::Mutex`.
             ///
             /// Enables interior mutability in synchronous code.
@@ -38,6 +41,7 @@ pub fn generate_parse_toml(input: &DeriveInput) -> TokenStream {
                 std::sync::Mutex::new(self.0)
             }
 
+            #[cfg(feature="refcell")]
             /// Consumes `ParseToml` and wraps it in `RefCell`.
             ///
             /// Allows mutable borrows at runtime in single-threaded contexts.
@@ -45,6 +49,7 @@ pub fn generate_parse_toml(input: &DeriveInput) -> TokenStream {
                 std::cell::RefCell::new(self.0)
             }
 
+            #[cfg(feature="unsafecell")]
             /// Consumes `ParseToml` and wraps it in `UnsafeCell`.
             ///
             /// Low-level container for interior mutability.
@@ -52,6 +57,7 @@ pub fn generate_parse_toml(input: &DeriveInput) -> TokenStream {
                 std::cell::UnsafeCell::new(self.0)
             }
 
+            #[cfg(feature="oncecell")]
             /// Consumes `ParseToml` and initializes a `OnceCell` with the TOML value.
             ///
             /// Returns the populated `OnceCell`. If already set internally, silently does nothing.
@@ -61,6 +67,7 @@ pub fn generate_parse_toml(input: &DeriveInput) -> TokenStream {
                 cell
             }
 
+            #[cfg(feature="toml")]
             /// Attempts to deserialize the internal `toml::Value` into the original struct.
             ///
             /// # Errors
@@ -69,6 +76,7 @@ pub fn generate_parse_toml(input: &DeriveInput) -> TokenStream {
                 self.0.try_into()
             }
 
+            #[cfg(feature="toml")]
             /// Attempts to deserialize the given `toml::Value` into the original struct.
             ///
             /// This method borrows the `value` rather than consuming `self`.

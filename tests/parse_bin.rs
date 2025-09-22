@@ -1,3 +1,5 @@
+#![cfg(all(feature = "serde", feature = "bincode", not(feature = "full")))]
+
 use kenzu::Builder;
 use serde::{Deserialize, Serialize};
 use shori::Parser;

@@ -1,6 +1,6 @@
 [package]
 name = "shori"
-version = "0.0.6"
+version = "0.0.7"
 edition = "2024"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/pas2rust/shori"
@@ -17,20 +17,63 @@ exclude = [
     "main.rs"
 ]
 
-
 [lib]
 proc-macro = true
 
 [dependencies]
 proc-macro2 = "1.0"
 quote = "1.0"
-syn = "2.0"
-mokuya = "0.0"
-bincode = "2.0"
-hex = "0.4"
-kenzu = "0.0"
-toml = { version = "0.9", features = ["serde"] }
-regex = "1.11"
-serde = { version = "1", features = ["derive"] }
-serde_json = "1.0"
-tokio = { version = "1.47", features = ["full"] }
+syn  = "2.0"
+mokuya ="0.0"
+hex = { version = "0.4", optional = true }
+bincode = { version = "2.0", optional = true }
+toml = { version = "0.9", features = ["serde"], optional = true }
+regex = { version = "1", optional = true }
+serde = { version = "1", features = ["derive"], optional = true }
+serde_json = { version = "1.0", optional = true }
+tokio = { version = "1.47", features = ["full"], optional = true }
+zipher = { version = "0.1", optional = true, default-features = false }
+
+[dev-dependencies]
+kenzu = { version = "0.0.7", features = ["default"] }
+regex = "1"
+
+[features]
+default = []
+hex = ["dep:hex"]
+bincode = ["dep:bincode"]
+toml = ["dep:toml"]
+regex = ["dep:regex"]
+serde = ["dep:serde"]
+serde_json = ["dep:serde_json"]
+tokio = ["dep:tokio"]
+zipher = ["dep:zipher"]
+arc = []
+box = []
+hashmap = []
+mutex = []
+oncecell = []
+refcell = []
+vec = []
+unsafecell = []
+tuple = []
+
+full = [
+    "hex", 
+    "bincode", 
+    "toml", 
+    "regex", 
+    "serde", 
+    "serde_json", 
+    "tokio", 
+    "zipher",
+    "arc",
+    "box",
+    "hashmap",
+    "mutex",
+    "oncecell",
+    "refcell",
+    "vec",
+    "unsafecell",
+    "tuple"
+]

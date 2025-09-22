@@ -15,11 +15,13 @@ pub fn generate_parse_bin(input: &DeriveInput) -> TokenStream {
                 &self.0
             }
 
+           #[cfg(feature = "hex")]
             /// Returns a hexadecimal string representation of the bytes.
             pub fn hex(&self) -> String {
                 hex::encode(&self.0)
             }
 
+            #[cfg(feature = "hex")]
             /// Attempts to decode an instance of the struct from a hex string.
             ///
             /// # Errors
@@ -32,31 +34,37 @@ pub fn generate_parse_bin(input: &DeriveInput) -> TokenStream {
                     .map_err(Into::into)
             }
 
+            #[cfg(feature="arc")]
             /// Converts the inner bytes into an `Arc<Vec<u8>>`.
             pub fn arc(self) -> std::sync::Arc<Vec<u8>> {
                 std::sync::Arc::new(self.0)
             }
 
+            #[cfg(feature = "tokio")]
             /// Wraps the inner bytes in a Tokio `Mutex`.
             pub fn tokio_mutex(self) -> tokio::sync::Mutex<Vec<u8>> {
                 tokio::sync::Mutex::new(self.0)
             }
 
+            #[cfg(feature="mutex")]
             /// Wraps the inner bytes in a standard `Mutex`.
             pub fn mutex(self) -> std::sync::Mutex<Vec<u8>> {
                 std::sync::Mutex::new(self.0)
             }
 
+            #[cfg(feature="refcell")]
             /// Wraps the inner bytes in a `RefCell` for interior mutability.
             pub fn ref_cell(self) -> std::cell::RefCell<Vec<u8>> {
                 std::cell::RefCell::new(self.0)
             }
 
+            #[cfg(feature="unsafecell")]
             /// Wraps the inner bytes in an `UnsafeCell`.
             pub fn unsafe_cell(self) -> std::cell::UnsafeCell<Vec<u8>> {
                 std::cell::UnsafeCell::new(self.0)
             }
 
+            #[cfg(feature="oncecell")]
             /// Wraps the inner bytes in a `OnceCell` for one-time initialization.
             pub fn once_cell(self) -> std::cell::OnceCell<Vec<u8>> {
                 let cell = std::cell::OnceCell::new();
@@ -64,6 +72,7 @@ pub fn generate_parse_bin(input: &DeriveInput) -> TokenStream {
                 cell
             }
 
+            #[cfg(feature="bincode")]
             /// Attempts to decode the struct instance from the inner byte slice.
             ///
             /// # Errors
@@ -74,6 +83,7 @@ pub fn generate_parse_bin(input: &DeriveInput) -> TokenStream {
                     .map(|(result, _)| result)
             }
 
+            #[cfg(feature="bincode")]
             /// Attempts to decode the struct instance from the provided byte slice.
             ///
             /// # Errors

@@ -19,11 +19,13 @@ pub fn generate_parse_unsafe_cell(input: &DeriveInput) -> TokenStream {
                 self.0
             }
 
+            #[cfg(feature="arc")]
             /// Wraps the `UnsafeCell` in an `Arc` for shared ownership across threads.
             pub fn arc(self) -> std::sync::Arc<std::cell::UnsafeCell<#struct_name>> {
                 std::sync::Arc::new(self.0)
             }
 
+            #[cfg(feature="box")]
             /// Boxes the `UnsafeCell`.
             pub fn boxed(self) -> Box<std::cell::UnsafeCell<#struct_name>> {
                 Box::new(self.0)

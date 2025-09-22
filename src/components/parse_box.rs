@@ -18,31 +18,37 @@ pub fn generate_parse_box(input: &DeriveInput) -> TokenStream {
                 self.0
             }
 
+            #[cfg(feature="arc")]
             /// Converts the boxed value into an `Arc<Box<#struct_name>>`.
             pub fn arc(self) -> std::sync::Arc<Box<#struct_name>> {
                 std::sync::Arc::new(self.0)
             }
 
+            #[cfg(feature = "tokio")]
             /// Wraps the boxed value in a Tokio async mutex.
             pub fn tokio_mutex(self) -> tokio::sync::Mutex<Box<#struct_name>> {
                 tokio::sync::Mutex::new(self.0)
             }
 
+            #[cfg(feature="mutex")]
             /// Wraps the boxed value in a standard mutex.
             pub fn mutex(self) -> std::sync::Mutex<Box<#struct_name>> {
                 std::sync::Mutex::new(self.0)
             }
 
+            #[cfg(feature="refcell")]
             /// Wraps the boxed value in a `RefCell` for interior mutability.
             pub fn ref_cell(self) -> std::cell::RefCell<Box<#struct_name>> {
                 std::cell::RefCell::new(self.0)
             }
 
+            #[cfg(feature="unsafecell")]
             /// Wraps the boxed value in an `UnsafeCell`.
             pub fn unsafe_cell(self) -> std::cell::UnsafeCell<Box<#struct_name>> {
                 std::cell::UnsafeCell::new(self.0)
             }
 
+            #[cfg(feature="oncecell")]
             /// Wraps the boxed value in a `OnceCell` for one-time initialization.
             pub fn once_cell(self) -> std::cell::OnceCell<Box<#struct_name>> {
                 let cell = std::cell::OnceCell::new();

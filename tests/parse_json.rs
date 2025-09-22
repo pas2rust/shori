@@ -1,19 +1,10 @@
+#![cfg(all(feature = "serde", feature = "serde_json", not(feature = "full")))]
+
 use kenzu::Builder;
 use serde::{Deserialize, Serialize};
 use shori::Parser;
 
-#[derive(
-    Builder,
-    PartialEq,
-    Default,
-    Parser,
-    Debug,
-    Clone,
-    Serialize,
-    Deserialize,
-    bincode::Encode,
-    bincode::Decode,
-)]
+#[derive(Builder, PartialEq, Default, Parser, Debug, Clone, Serialize, Deserialize)]
 pub struct User {
     pub id: String,
     #[set(value = "name")]

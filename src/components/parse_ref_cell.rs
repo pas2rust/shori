@@ -16,16 +16,19 @@ pub fn generate_parse_ref_cell(input: &DeriveInput) -> TokenStream {
                 self.0
             }
 
+            #[cfg(feature="arc")]
             /// Consumes self and returns an `Arc` wrapping the `RefCell` for shared ownership.
             pub fn arc(self) -> std::sync::Arc<std::cell::RefCell<#struct_name>> {
                 std::sync::Arc::new(self.0)
             }
 
+            #[cfg(feature="box")]
             /// Consumes self and returns a boxed `RefCell`.
             pub fn boxed(self) -> Box<std::cell::RefCell<#struct_name>> {
                 Box::new(self.0)
             }
 
+            #[cfg(feature="unsafecell")]
             /// Consumes self and returns an `UnsafeCell` wrapping the `RefCell`.
             pub fn unsafe_cell(self) -> std::cell::UnsafeCell<std::cell::RefCell<#struct_name>> {
                 std::cell::UnsafeCell::new(self.0)

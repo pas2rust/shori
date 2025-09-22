@@ -23,6 +23,7 @@ pub fn generate_parse(input: &DeriveInput) -> TokenStream {
         pub struct Parse(#struct_name);
 
         impl Parse {
+            #[cfg(feature="arc")]
             /// Converts the inner struct into an `Arc`, wrapped in `ParseArc`.
             ///
             /// Useful for thread-safe shared ownership.
@@ -30,6 +31,7 @@ pub fn generate_parse(input: &DeriveInput) -> TokenStream {
                 ParseArc(std::sync::Arc::new(self.0))
             }
 
+            #[cfg(feature = "tokio")]
             /// Converts into a `tokio::sync::Mutex`, wrapped in `ParseTokioMutex`.
             ///
             /// Useful for safe mutation across async tasks.
@@ -37,6 +39,7 @@ pub fn generate_parse(input: &DeriveInput) -> TokenStream {
                 ParseTokioMutex(tokio::sync::Mutex::new(self.0))
             }
 
+            #[cfg(feature="hashmap")]
             /// Converts the struct fields into a `HashMap<String, Box<dyn Any + Send + Sync>>`.
             ///
             /// This enables dynamic access to fields by their name.
@@ -51,6 +54,7 @@ pub fn generate_parse(input: &DeriveInput) -> TokenStream {
                 ParseHashMap(map)
             }
 
+            #[cfg(feature="mutex")]
             /// Converts into a `std::sync::Mutex` wrapped in `ParseMutex`.
             ///
             /// Use this for interior mutability in synchronous code.
@@ -58,16 +62,19 @@ pub fn generate_parse(input: &DeriveInput) -> TokenStream {
                 ParseMutex(std::sync::Mutex::new(self.0))
             }
 
+            #[cfg(feature="box")]
             /// Boxes the inner struct into `Box<T>`, wrapped in `ParseBox`.
             pub fn boxed(self) -> ParseBox {
                 ParseBox(Box::new(self.0))
             }
 
+            #[cfg(feature="refcell")]
             /// Wraps the struct in a `RefCell`, allowing interior mutability in single-threaded contexts.
             pub fn ref_cell(self) -> ParseRefCell {
                 ParseRefCell(std::cell::RefCell::new(self.0))
             }
 
+            #[cfg(feature = "bincode")]
             /// Serializes the struct into binary using `bincode`, wrapped in `ParseBin`.
             ///
             /// # Errors
@@ -78,6 +85,7 @@ pub fn generate_parse(input: &DeriveInput) -> TokenStream {
                 Ok(ParseBin(serialized))
             }
 
+            #[cfg(feature = "toml")]
             /// Serializes the struct into a `toml::Value`, wrapped in `ParseToml`.
             ///
             /// # Errors
@@ -88,6 +96,7 @@ pub fn generate_parse(input: &DeriveInput) -> TokenStream {
                 Ok(ParseToml(value))
             }
 
+            #[cfg(feature = "serde_json")]
             /// Serializes the struct into a `serde_json::Value`, wrapped in `ParseJson`.
             ///
             /// # Errors
@@ -97,6 +106,7 @@ pub fn generate_parse(input: &DeriveInput) -> TokenStream {
                 Ok(ParseJson(json))
             }
 
+            #[cfg(feature="vec")]
             /// Wraps the struct into a `Vec<T>`, containing a single element.
             ///
             /// Useful for APIs that expect list input.
@@ -104,6 +114,7 @@ pub fn generate_parse(input: &DeriveInput) -> TokenStream {
                 ParseVec(vec![self.0])
             }
 
+            #[cfg(feature="unsafecell")]
             /// Wraps the struct in an `UnsafeCell`.
             ///
             /// Allows unchecked interior mutability.
@@ -111,6 +122,7 @@ pub fn generate_parse(input: &DeriveInput) -> TokenStream {
                 ParseUnsafeCell(std::cell::UnsafeCell::new(self.0))
             }
 
+            #[cfg(feature="oncecell")]
             /// Initializes a `OnceCell` with the struct.
             ///
             /// The value is set once and subsequent attempts are ignored.
@@ -120,6 +132,7 @@ pub fn generate_parse(input: &DeriveInput) -> TokenStream {
                 ParseOnceCell(cell)
             }
 
+            #[cfg(feature="tuple")]
             /// Returns a tuple of references to all the struct's fields.
             ///
             /// Useful for destructuring or pattern matching.
