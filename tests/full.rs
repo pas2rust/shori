@@ -1,4 +1,4 @@
-#![cfg(feature="full")]
+#![cfg(feature = "full")]
 
 use kenzu::Builder;
 use serde::{Deserialize, Serialize};
@@ -81,7 +81,6 @@ fn parse_bin() {
     assert_eq!(user.gender, "F");
 }
 
-
 #[test]
 fn parse_arc_mutex_concurrent() {
     use std::sync::Arc;
@@ -159,7 +158,6 @@ fn parse_arc() {
     assert_eq!(user.gender, "F");
 }
 
-
 #[test]
 fn parse_box() {
     let user = User::new()
@@ -177,7 +175,6 @@ fn parse_box() {
 
     assert_eq!(user.name, "John Doe");
 }
-
 
 #[test]
 fn parse_hash_map() {
@@ -207,8 +204,6 @@ fn parse_hash_map() {
     assert_eq!(user.get::<u8>("age").unwrap(), &age);
     assert_eq!(user.get::<String>("gender").unwrap(), &gender);
 }
-
-
 
 #[test]
 fn parse_json() {
@@ -336,7 +331,6 @@ async fn parse_tokio_mutex() {
     assert_eq!(user.age, 25);
     assert_eq!(user.gender, "F");
 }
-
 
 #[test]
 fn parse_toml() {
