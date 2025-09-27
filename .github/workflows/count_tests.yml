@@ -37,7 +37,7 @@ jobs:
         run: |
           pasops tests-badges \
             --user pas2rust \
-            --badge-name pasops-tests.svg \
+            --badge-name shori-tests.svg \
             --label tests \
             --color success \
             --logo testcafe \
