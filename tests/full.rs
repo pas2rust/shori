@@ -45,7 +45,7 @@ fn parse_bin() -> Result<(), String> {
         .unwrap();
 
     let user_bin = user_parse_bin.get();
-    let user_bin_from_bytes = user_parse_bin.from_bytes(&user_bin);
+    let user_bin_from_bytes = user_parse_bin.from_bytes(user_bin);
     assert!(user_bin_from_bytes.is_ok());
 
     let user_hex = user_parse_bin.hex();
@@ -218,7 +218,7 @@ fn parse_json() -> Result<(), String> {
         .unwrap();
 
     let user_json = user_parse_json.get();
-    let from_value_user = user_parse_json.from_value(&user_json);
+    let from_value_user = user_parse_json.from_value(user_json);
     assert!(from_value_user.is_ok());
 
     let user = from_value_user.unwrap();
@@ -345,7 +345,7 @@ fn parse_toml() -> Result<(), String> {
         .unwrap();
 
     let user_toml_value = user_parse_toml.get();
-    let from_value_user = user_parse_toml.from_value(&user_toml_value);
+    let from_value_user = user_parse_toml.from_value(user_toml_value);
     assert!(from_value_user.is_ok());
 
     let user = from_value_user.unwrap();
@@ -516,7 +516,7 @@ fn use_field_basic_and_wrappers() -> Result<(), String> {
     assert_eq!(name_cell.0.borrow().as_str(), "Jane Doe");
 
     let name_once = base.clone().parse().field().name().once_cell();
-    assert_eq!(name_once.0.get().map(|v| v).unwrap(), "John Doe");
+    assert_eq!(name_once.0.get().unwrap(), "John Doe");
 
     let name_vec = base.clone().parse().field().name().vec();
     assert_eq!(name_vec.0.len(), 1);
@@ -529,7 +529,7 @@ fn use_field_basic_and_wrappers() -> Result<(), String> {
         .name()
         .bin()
         .map_err(|e| e.to_string())?;
-    assert!(name_bin.0.len() > 0);
+    assert!(!name_bin.0.is_empty());
 
     let name_json = base
         .clone()
@@ -569,7 +569,7 @@ fn serialization_wrappers() -> Result<(), Box<dyn std::error::Error>> {
         .name(UserName::new("John Doe")?);
 
     let name_bin = base.clone().parse().field().name().bin()?;
-    assert!(name_bin.0.len() > 0);
+    assert!(!name_bin.0.is_empty());
 
     let name_json = base.parse().field().name().json()?;
     assert_eq!(name_json.0, "John Doe");
