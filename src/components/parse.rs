@@ -3,6 +3,8 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use syn::DeriveInput;
 
+use crate::generate_parse_by_field;
+
 pub fn generate_parse(input: &DeriveInput) -> TokenStream {
     let struct_name = get_struct_name(input);
     let impl_block = get_impl(input);
@@ -16,13 +18,18 @@ pub fn generate_parse(input: &DeriveInput) -> TokenStream {
         .collect();
     let field_types: Vec<_> = fields.iter().map(|field| &field.ty).collect();
     let field_idents: Vec<_> = fields.iter().map(|field| &field.ident).collect();
+    let parse_by_field = generate_parse_by_field(input);
 
     quote! {
         /// Wrapper type that provides parsing and transformation utilities
         /// for the underlying struct.
         pub struct Parse(#struct_name);
+        #parse_by_field
 
         impl Parse {
+            pub fn field(self) -> FieldSelector {
+                FieldSelector(self)
+            }
             #[cfg(feature="arc")]
             /// Converts the inner struct into an `Arc`, wrapped in `ParseArc`.
             ///
