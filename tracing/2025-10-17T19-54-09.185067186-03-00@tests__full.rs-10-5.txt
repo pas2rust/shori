@@ -1,0 +1,1 @@
+fn field␞(self = Parse(User { id: "", name: "name", password: "password123", email: "email@example.com", age: 18, gender: "" })) -> "FieldSelector(Parse(User { id: \"\", name: \"name\", password: \"password123\", email: \"email@example.com\", age: 18, gender: \"\" }))"␞execution time=24.053µs

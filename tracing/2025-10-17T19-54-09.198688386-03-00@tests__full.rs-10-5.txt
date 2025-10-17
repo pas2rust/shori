@@ -1,0 +1,1 @@
+fn tokio_mutex␞(self = FieldName(ParseUserName("John Doe"))) -> "FieldNameTokioMutex(Mutex { data: \"John Doe\" })"␞execution time=17.018µs

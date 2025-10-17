@@ -1,0 +1,1 @@
+fn ref_cell␞(self = FieldName(ParseUserName("John Doe"))) -> "FieldNameRefCell(RefCell { value: \"John Doe\" })"␞execution time=9.839µs

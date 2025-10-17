@@ -1,0 +1,1 @@
+fn arc␞(self = FieldName(ParseUserName("John Doe"))) -> "FieldNameArc(\"John Doe\")"␞execution time=7.85µs

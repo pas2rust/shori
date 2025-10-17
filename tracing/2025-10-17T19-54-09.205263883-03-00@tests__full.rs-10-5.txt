@@ -1,0 +1,1 @@
+fn parse␞(self = User { id: "123e4567-e89b-12d3-a456-426614174000", name: "John Doe", password: "password123", email: "johndoe@example.com", age: 25, gender: "F" }) -> "Parse(User { id: \"123e4567-e89b-12d3-a456-426614174000\", name: \"John Doe\", password: \"password123\", email: \"johndoe@example.com\", age: 25, gender: \"F\" })"␞execution time=11.02µs

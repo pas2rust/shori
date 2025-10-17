@@ -1,0 +1,1 @@
+fn get␞(self = ParseHashMap { keys: ["password", "age", "email", "id", "name", "gender"] }, key = "age") -> "Some(25)"␞execution time=32.494µs

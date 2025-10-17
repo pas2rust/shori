@@ -608,3 +608,13 @@ fn unsafe_cell_wrappers() {
         assert_eq!(&*ptr, "John Doe");
     }
 }
+
+#[test]
+#[cfg(feature = "argon2")]
+fn argon2_wrappers() {
+    let base = User::new().password(UserPassword::new("password123").unwrap());
+    let phc = base.parse().field().password().argon2_hash().unwrap();
+    assert!(phc.0.contains("$argon2"));
+    assert!(phc.verify("password123").unwrap());
+    assert!(!phc.verify("wrong-password").unwrap());
+}

@@ -1,6 +1,6 @@
 [package]
 name = "shori"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/pas2rust/shori"
@@ -31,8 +31,11 @@ toml = { version = "0", features = ["serde"], optional = true }
 regex = { version = "1", optional = true }
 serde = { version = "1", features = ["derive"], optional = true }
 serde_json = { version = "1", optional = true }
-nekotracing = { version = "0.0", optional = true }
+nekotracing = { version = "0.0.5", optional = true }
 tokio = { version = "1", features = ["full"], optional = true }
+aes-gcm-siv = {version = "0.11.1", optional = true}
+argon2 = {version = "0.5.3", optional = true}
+chrono = { version = "0.4", optional = true }
 
 [dev-dependencies]
 kenzu = { version = "0.1", features = ["default"] }
@@ -40,6 +43,8 @@ regex = "1"
 
 [features]
 default = ["full"]
+argon2 = ["dep:argon2"]
+aes-gcm-siv = ["dep:aes-gcm-siv"]
 hex = ["dep:hex"]
 bincode = ["dep:bincode"]
 toml = ["dep:toml"]
@@ -47,7 +52,7 @@ regex = ["dep:regex"]
 serde = ["dep:serde"]
 serde_json = ["dep:serde_json"]
 tokio = ["dep:tokio"]
-nekotracing = ["dep:nekotracing"]
+nekotracing = ["dep:nekotracing", "dep:chrono"]
 arc = []
 box = []
 hashmap = []
@@ -61,6 +66,8 @@ tuple = []
 full = [
     "hex", 
     "bincode", 
+    "argon2",
+    "aes-gcm-siv",
     "nekotracing",
     "toml", 
     "regex", 

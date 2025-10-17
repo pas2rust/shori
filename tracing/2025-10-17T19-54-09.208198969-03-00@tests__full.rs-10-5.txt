@@ -1,0 +1,1 @@
+fn unsafe_cell␞(self = FieldName(ParseUserName("John Doe"))) -> "FieldNameUnsafeCell(UnsafeCell { .. })"␞execution time=7.704µs

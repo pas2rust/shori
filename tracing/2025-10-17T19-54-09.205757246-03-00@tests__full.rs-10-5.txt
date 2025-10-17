@@ -1,0 +1,1 @@
+fn boxed␞(self = FieldName(ParseUserName("John Doe"))) -> "FieldNameBox(\"John Doe\")"␞execution time=8.263µs

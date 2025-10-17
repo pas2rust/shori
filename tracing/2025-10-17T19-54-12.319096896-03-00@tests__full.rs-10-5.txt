@@ -1,0 +1,1 @@
+fn argon2_hash␞(self = FieldPassword(ParseUserPassword("password123"))) -> "Ok(FieldPasswordArgon2(\"$argon2id$v=19$m=65536,t=3,p=4$2a8KwP3ml3BAG7RNReVZhQ$4erG5db18h3MaUlUmXZFamWu7AKWJ5tP+Ug79rZYQW8\"))"␞execution time=3.133856821s

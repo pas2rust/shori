@@ -1,0 +1,1 @@
+fn mutex␞(self = FieldName(ParseUserName("John Doe"))) -> "FieldNameMutex(Mutex { data: \"John Doe\", poisoned: false, .. })"␞execution time=13.509µs

@@ -1,0 +1,1 @@
+fn json␞(self = FieldName(ParseUserName("John Doe"))) -> "Ok(FieldNameJson(String(\"John Doe\")))"␞execution time=27.915µs

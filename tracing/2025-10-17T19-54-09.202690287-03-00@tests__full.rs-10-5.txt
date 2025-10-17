@@ -1,0 +1,1 @@
+fn get␞(self = ParseUnsafeCell(UnsafeCell { .. })) -> "UnsafeCell { .. }"␞execution time=6.369µs

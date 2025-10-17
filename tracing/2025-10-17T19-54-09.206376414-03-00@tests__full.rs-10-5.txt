@@ -1,0 +1,1 @@
+fn once_cell␞(self = FieldName(ParseUserName("John Doe"))) -> "FieldNameOnceCell(OnceCell(\"John Doe\"))"␞execution time=18.129µs
