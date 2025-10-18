@@ -240,58 +240,58 @@ pub fn generate_parse_by_field(input: &DeriveInput) -> proc_macro2::TokenStream 
             });
 
             per_field_feature_methods.push(quote! {
-            #[cfg(feature = "argon2")]
-            impl #outer_ident {
-                #[cfg_attr(feature = "nekotracing", nekotracing::nekotracing)]
-                pub fn argon2_hash(self) -> Result<#argon_ident, Box<dyn std::error::Error + Send + Sync>> {
-                    use argon2::{
-                        Argon2, Algorithm, Version, Params,
-                        password_hash::{SaltString, PasswordHasher, rand_core::OsRng},
-                    };
-                    use std::io::{Error as IoError, ErrorKind};
+                #[cfg(feature = "argon2")]
+                impl #outer_ident {
+                    #[cfg_attr(feature = "nekotracing", nekotracing::nekotracing)]
+                    pub fn argon2_hash(self) -> Result<#argon_ident, Box<dyn std::error::Error + Send + Sync>> {
+                        use argon2::{
+                            Argon2, Algorithm, Version, Params,
+                            password_hash::{SaltString, PasswordHasher, rand_core::OsRng},
+                        };
+                        use std::io::{Error as IoError, ErrorKind};
 
-                    let m_cost_kib: u32 = 65_536;
-                    let t_cost: u32 = 3;
-                    let p_cost: u32 = match std::thread::available_parallelism() {
-                        Ok(nz) => {
-                            let v = nz.get() as u32;
-                            if v == 0 { 1 } else { std::cmp::min(v, 4) }
-                        }
-                        Err(_) => 1,
-                    };
+                        let m_cost_kib: u32 = 65_536;
+                        let t_cost: u32 = 3;
+                        let p_cost: u32 = match std::thread::available_parallelism() {
+                            Ok(nz) => {
+                                let v = nz.get() as u32;
+                                if v == 0 { 1 } else { std::cmp::min(v, 4) }
+                            }
+                            Err(_) => 1,
+                        };
 
-                    let params = Params::new(m_cost_kib, t_cost, p_cost, Some(32))
-                        .map_err(|e| Box::new(IoError::new(ErrorKind::Other, e.to_string())) as Box<dyn std::error::Error + Send + Sync>)?;
-                    let argon = Argon2::new(Algorithm::Argon2id, Version::V0x13, params);
+                        let params = Params::new(m_cost_kib, t_cost, p_cost, Some(32))
+                            .map_err(|e| Box::new(IoError::new(ErrorKind::Other, e.to_string())) as Box<dyn std::error::Error + Send + Sync>)?;
+                        let argon = Argon2::new(Algorithm::Argon2id, Version::V0x13, params);
 
-                    let salt = SaltString::generate(&mut OsRng);
-                    let phc = argon
-                        .hash_password(self.0 .0.as_bytes(), &salt)
-                        .map_err(|e| Box::new(IoError::new(ErrorKind::Other, e.to_string())) as Box<dyn std::error::Error + Send + Sync>)?;
+                        let salt = SaltString::generate(&mut OsRng);
+                        let phc = argon
+                            .hash_password(self.0 .0.as_bytes(), &salt)
+                            .map_err(|e| Box::new(IoError::new(ErrorKind::Other, e.to_string())) as Box<dyn std::error::Error + Send + Sync>)?;
 
-                    Ok(#argon_ident(phc.to_string()))
+                        Ok(#argon_ident(phc.to_string()))
+                    }
                 }
-            }
 
             #[cfg(feature = "argon2")]
             impl #argon_ident {
-                #[cfg_attr(feature = "nekotracing", nekotracing::nekotracing)]
-                pub fn verify(&self, candidate: &str) -> Result<bool, Box<dyn std::error::Error + Send + Sync>> {
-                    use argon2::{Argon2, password_hash::PasswordHash, password_hash::PasswordVerifier};
-                    use std::io::{Error as IoError, ErrorKind};
+                    #[cfg_attr(feature = "nekotracing", nekotracing::nekotracing)]
+                    pub fn verify(&self, candidate: &str) -> Result<bool, Box<dyn std::error::Error + Send + Sync>> {
+                        use argon2::{Argon2, password_hash::PasswordHash, password_hash::PasswordVerifier};
+                        use std::io::{Error as IoError, ErrorKind};
 
-                    let parsed = PasswordHash::new(&self.0)
-                        .map_err(|e| Box::new(IoError::new(ErrorKind::Other, e.to_string())) as Box<dyn std::error::Error + Send + Sync>)?;
+                        let parsed = PasswordHash::new(&self.0)
+                            .map_err(|e| Box::new(IoError::new(ErrorKind::Other, e.to_string())) as Box<dyn std::error::Error + Send + Sync>)?;
 
-                    let argon = Argon2::default();
+                        let argon = Argon2::default();
 
-                    match argon.verify_password(candidate.as_bytes(), &parsed) {
-                        Ok(()) => Ok(true),
-                        Err(_) => Ok(false),
+                        match argon.verify_password(candidate.as_bytes(), &parsed) {
+                            Ok(()) => Ok(true),
+                            Err(_) => Ok(false),
+                        }
                     }
                 }
-            }
-        });
+            });
         }
     }
 
